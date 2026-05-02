@@ -1,0 +1,50 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function getPatient(patientId) {
+      return get(/databases/$(database)/documents/users/$(patientId)).data;
+    }
+
+    function isSharingEnabled(patientId) {
+      return getPatient(patientId).sharingEnabled == true;
+    }
+
+    function isDoctor() {
+      return isSignedIn() && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'doctor';
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      // Users can read and write their own profile
+      allow get: if isSignedIn(); // Doctors need to be able to check if a patient exists and their sharing status
+      allow list: if isSignedIn(); // Doctors might search for patients
+      allow create: if isSignedIn() && request.auth.uid == userId;
+      allow update: if isOwner(userId);
+    }
+
+    // Records collection
+    match /records/{recordId} {
+      // Patients can manage their own records
+      allow create: if isSignedIn() && request.resource.data.patientId == request.auth.uid;
+      allow read: if isSignedIn() && (
+        resource.data.patientId == request.auth.uid || 
+        (isDoctor() && isSharingEnabled(resource.data.patientId))
+      );
+      allow delete: if isSignedIn() && resource.data.patientId == request.auth.uid;
+    }
+  }
+}
