@@ -10,6 +10,11 @@ interface UserProfile {
   name: string;
   onboarded: boolean;
   sharingEnabled?: boolean;
+  age?: number;
+  gender?: string;
+  bloodGroup?: string;
+  address?: string;
+  degree?: string;
 }
 
 interface AuthContextType {

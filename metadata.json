@@ -1,6 +1,6 @@
 {
   "name": "MedVault",
-  "description": "A mobile-first portable digital health record system for patients and doctors.",
-  "requestFramePermissions": [],
+  "description": "A mobile-first portable digital health record system for patients and doctors with AI Healthu assistant.",
+  "requestFramePermissions": ["camera"],
   "majorCapabilities": []
 }

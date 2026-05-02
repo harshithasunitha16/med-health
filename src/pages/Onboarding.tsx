@@ -54,7 +54,8 @@ export const Onboarding: React.FC = () => {
         })
       };
 
-      await setDoc(doc(db, 'users', user.uid), data);
+      // Use setDoc with merge: true to avoid issues if the document was partially created
+      await setDoc(doc(db, 'users', user.uid), data, { merge: true });
       await refreshProfile();
       localStorage.removeItem('pending_role');
       navigate(role === 'patient' ? '/patient/dashboard' : '/doctor/dashboard');

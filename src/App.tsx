@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { Navbar } from './components/Navbar';
+import { HealthuChat } from './components/HealthuChat';
 
 // Pages
 import { Login } from './pages/Login';
@@ -28,7 +29,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <div className="min-h-screen bg-gray-50 font-sans antialiased text-gray-900">
+        <div className="min-h-screen bg-[#F8FAFC] font-sans antialiased text-gray-900 overflow-x-hidden">
           <Navbar />
           <Routes>
             {/* Public Routes */}
@@ -91,6 +92,7 @@ export default function App() {
             <Route path="/" element={<ProtectedRoute><DashboardRedirect /></ProtectedRoute>} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          <HealthuChat />
         </div>
       </AuthProvider>
     </BrowserRouter>

@@ -30,6 +30,19 @@
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["patientId", "fileURL", "type", "createdAt"]
+    },
+    "Reminder": {
+      "title": "Health Reminder",
+      "description": "Medicine or checkup reminders for patients.",
+      "type": "object",
+      "properties": {
+        "patientId": { "type": "string" },
+        "title": { "type": "string" },
+        "time": { "type": "string" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["patientId", "title", "time", "active"]
     }
   },
   "firestore": {
@@ -40,6 +53,10 @@
     "/records/{recordId}": {
       "schema": "Record",
       "description": "Stores medical records links and metadata."
+    },
+    "/reminders/{reminderId}": {
+      "schema": "Reminder",
+      "description": "Stores health reminders for users."
     }
   }
 }
